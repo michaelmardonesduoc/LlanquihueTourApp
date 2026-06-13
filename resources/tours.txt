@@ -1,0 +1,5 @@
+Isla Huar;gastronómico;15
+Lago Llanquihue;lacustre;20
+Ruta Volcanes;aventura;8
+Puerto Montt Cultural;cultural;0
+Paseo Chiloé;lacustre;12
