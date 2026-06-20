@@ -1,6 +1,7 @@
 package data;
 
 import model.Tour;
+import model.Guia;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,7 +9,6 @@ import java.util.ArrayList;
 
 public class GestorDatos {
 
-    // Lee el archivo y retorna un ArrayList de Tours
     public ArrayList<Tour> cargarTours(String ruta) {
         ArrayList<Tour> lista = new ArrayList<>();
 
@@ -16,21 +16,34 @@ public class GestorDatos {
             BufferedReader br = new BufferedReader(new FileReader(ruta));
             String linea;
 
-            // Lee línea por línea
             while ((linea = br.readLine()) != null) {
-                // Separa los datos con punto y coma
-                String[] partes = linea.split(";");
-                String nombre = partes[0];
-                String tipo = partes[1];
-                int stock = Integer.parseInt(partes[2]);
 
-                // Crea objeto y lo agrega al ArrayList
-                Tour tour = new Tour(nombre, tipo, stock);
-                lista.add(tour);
+                if (linea.trim().isEmpty()) {   // NUEVO: salta líneas vacías
+                    continue;
+                }
+
+                // NUEVO: try-catch interno -> una línea mala NO detiene todo
+                try {
+                    String[] partes = linea.split(";");
+                    String nombre = partes[0];
+                    String tipo = partes[1];
+                    int stock = Integer.parseInt(partes[2]);
+                    String nombreGuia = partes[3];
+                    String idioma = partes[4];
+
+                    Guia guia = new Guia(nombreGuia, idioma);
+                    Tour tour = new Tour(nombre, tipo, stock, guia);
+                    lista.add(tour);
+
+                } catch (NumberFormatException e) {
+                    System.out.println("Stock inválido, línea ignorada: " + linea);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Línea incompleta, ignorada: " + linea);
+                }
             }
             br.close();
 
-        } catch (IOException e) {
+        } catch (IOException e) {   // error del archivo (no existe, no se puede abrir)
             System.out.println("Error al leer el archivo: " + e.getMessage());
         }
 

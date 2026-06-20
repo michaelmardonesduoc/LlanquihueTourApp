@@ -1,5 +1,5 @@
-Isla Huar;gastronómico;15
-Lago Llanquihue;lacustre;20
-Ruta Volcanes;aventura;8
-Puerto Montt Cultural;cultural;0
-Paseo Chiloé;lacustre;12
+Isla Huar;gastronómico;15;María Soto;Inglés
+Lago Llanquihue;lacustre;20;Pedro Cárcamo;Alemán
+Ruta Volcanes;aventura;8;Camila Vera;Español
+Puerto Montt Cultural;cultural;0;María Soto;Inglés
+Paseo Chiloé;lacustre;12;Pedro Cárcamo;Alemán

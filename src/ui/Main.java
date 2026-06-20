@@ -33,5 +33,14 @@ public class Main {
                 System.out.println(t);
             }
         }
-    }
-}
+
+        // 4. Buscar tours por nombre
+        String busqueda = "lago";
+        System.out.println("\n=== BÚSQUEDA POR NOMBRE: '" + busqueda + "' ===");
+        for (Tour t : tours) {
+            if (t.getNombre().toLowerCase().contains(busqueda.toLowerCase())) {
+                System.out.println(t);
+            }
+        }
+    }   // cierra el main
+}       // cierra la clase Main

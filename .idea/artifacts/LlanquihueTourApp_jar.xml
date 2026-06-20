@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="LlanquihueTourApp:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/LlanquihueTourApp_jar</output-path>
+    <root id="archive" name="LlanquihueTourApp.jar">
+      <element id="module-output" name="LlanquihueTourApp" />
+    </root>
+  </artifact>
+</component>
