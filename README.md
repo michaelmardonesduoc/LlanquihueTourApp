@@ -1,30 +1,25 @@
 # LlanquihueTourApp
 
-## Nombre del proyecto
-LlanquihueTourApp — Sistema de gestión de tours para la agencia de turismo Llanquihue Tour.
+Aplicación de gestión turística desarrollada en Java para el curso Desarrollo Orientado a Objetos - DUOC UC.
 
-## Descripción del sistema
-Aplicación de consola desarrollada en Java que gestiona los tours de la agencia Llanquihue Tour. El sistema lee los datos desde un archivo externo (.txt), los carga en una colección dinámica (ArrayList) y permite mostrarlos, filtrarlos (por stock disponible y por tipo) y buscarlos por nombre. Cada tour está asociado a un guía mediante una relación de composición, y la lectura del archivo incluye validaciones con try-catch para manejar datos incorrectos.
+---
 
-## Paquetes utilizados y clases implementadas
-- **model**: clases del dominio.
-    - `Tour`: representa un tour (nombre, tipo, stock y su guía). Contiene un objeto `Guia` (composición).
-    - `Guia`: representa al guía de un tour (nombre e idioma).
-- **data**: acceso a datos.
-    - `GestorDatos`: lee el archivo, crea los objetos y los carga en un ArrayList, con manejo de errores mediante try-catch.
-- **ui**: interfaz de usuario (consola).
-    - `Main`: clase principal. Carga los tours y muestra los resultados por consola (todos, por stock, por tipo y búsqueda por nombre).
+## Semana 6 - Herencia
 
-## Instrucciones para ejecutar el programa
-1. Abre el proyecto en IntelliJ IDEA.
-2. Verifica que exista el archivo `resources/tours.txt` con los datos.
-3. Abre la clase principal `src/ui/Main.java`.
-4. Ejecuta el método `main` (botón verde Run o Shift + F10).
-5. Los resultados se mostrarán en la consola.
+### Objetivo
+Implementar una jerarquía de clases usando herencia en Java, con una superclase abstracta y tres subclases que representan distintos tipos de servicios turísticos.
 
-## Formato del archivo de datos (resources/tours.txt)
-Separador: punto y coma ( ; ). Una línea por tour:
-nombre;tipo;stock;nombreGuia;idioma
+### Clases creadas
 
-Ejemplo:
-Isla Huar;gastronómico;15;María Soto;Inglés
+- `ServicioTuristico` — Superclase con atributos `nombre` y `duracionHoras`
+- `RutaGastronomica` — Subclase con atributo `numeroDeParadas`
+- `PaseoLacustre` — Subclase con atributo `tipoEmbarcacion`
+- `ExcursionCultural` — Subclase con atributo `lugarHistorico`
+- `GestorServicios` — Crea y almacena objetos de cada subclase
+- `Main` — Muestra todos los servicios por consola
+
+### Instrucciones para ejecutar Main
+
+1. Abrir el proyecto en IntelliJ IDEA
+2. Ejecutar la clase `ui/Main.java`
+3. La consola mostrará los tours y los servicios turísticos registrados
