@@ -3,6 +3,8 @@ package ui;
 import data.GestorDatos;
 import model.Tour;
 import java.util.ArrayList;
+import data.GestorServicios;
+import model.ServicioTuristico;
 
 public class Main {
 
@@ -42,5 +44,12 @@ public class Main {
                 System.out.println(t);
             }
         }
-    }   // cierra el main
+        // === SERVICIOS TURÍSTICOS ===
+        GestorServicios gestorServicios = new GestorServicios();
+        ArrayList<ServicioTuristico> servicios = gestorServicios.getServicios();
+
+        System.out.println("\n=== TODOS LOS SERVICIOS TURÍSTICOS ===");
+        for (ServicioTuristico s : servicios) {
+            System.out.println(s);
+        }}   // cierra el main
 }       // cierra la clase Main
