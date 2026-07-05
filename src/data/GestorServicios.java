@@ -30,4 +30,12 @@ public class GestorServicios {
     public ArrayList<ServicioTuristico> getServicios() {
         return servicios;
     }
+
+    // NUEVO (Semana 7): recorrido polimórfico de la colección
+    public void mostrarTodos() {
+        System.out.println("=== Servicios turísticos registrados ===");
+        for (ServicioTuristico servicio : servicios) {
+            servicio.mostrarInformacion(); // Java decide cuál versión ejecutar en tiempo de ejecución
+        }
+    }
 }

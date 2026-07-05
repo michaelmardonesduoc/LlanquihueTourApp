@@ -17,4 +17,10 @@ public class RutaGastronomica extends ServicioTuristico {
     public String toString() {
         return super.toString() + " | Tipo: Ruta Gastronómica | Paradas: " + numeroDeParadas;
     }
+    // NUEVO (Semana 7): sobrescritura polimórfica
+    @Override
+    public void mostrarInformacion() {
+        super.mostrarInformacion();
+        System.out.println("   Tipo: Ruta Gastronómica | Paradas: " + numeroDeParadas);
+    }
 }

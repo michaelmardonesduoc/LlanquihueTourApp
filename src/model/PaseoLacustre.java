@@ -17,4 +17,10 @@ public class PaseoLacustre extends ServicioTuristico {
     public String toString() {
         return super.toString() + " | Tipo: Paseo Lacustre | Embarcación: " + tipoEmbarcacion;
     }
+    // NUEVO (Semana 7): sobrescritura polimórfica
+    @Override
+    public void mostrarInformacion() {
+        super.mostrarInformacion();
+        System.out.println("   Tipo: Paseo Lacustre | Embarcación: " + tipoEmbarcacion);
+    }
 }

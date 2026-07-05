@@ -44,12 +44,8 @@ public class Main {
                 System.out.println(t);
             }
         }
-        // === SERVICIOS TURÍSTICOS ===
+        // === SERVICIOS TURÍSTICOS (Semana 7) ===
         GestorServicios gestorServicios = new GestorServicios();
-        ArrayList<ServicioTuristico> servicios = gestorServicios.getServicios();
-
-        System.out.println("\n=== TODOS LOS SERVICIOS TURÍSTICOS ===");
-        for (ServicioTuristico s : servicios) {
-            System.out.println(s);
-        }}   // cierra el main
+        gestorServicios.mostrarTodos();   // recorrido polimórfico usando mostrarInformacion()
+        } // cierra el main
 }       // cierra la clase Main

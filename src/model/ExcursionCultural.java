@@ -17,4 +17,10 @@ public class ExcursionCultural extends ServicioTuristico {
     public String toString() {
         return super.toString() + " | Tipo: Excursión Cultural | Lugar histórico: " + lugarHistorico;
     }
+    // NUEVO (Semana 7): sobrescritura polimórfica
+    @Override
+    public void mostrarInformacion() {
+        super.mostrarInformacion();
+        System.out.println("   Tipo: Excursión Cultural | Lugar histórico: " + lugarHistorico);
+    }
 }
