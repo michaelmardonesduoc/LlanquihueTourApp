@@ -45,3 +45,27 @@ una colección genérica e invocando un método sobrescrito en cada subclase.
 2. Ejecutar la clase `ui/Main.java`.
 3. La consola mostrará los tours y luego los servicios turísticos, donde cada
    servicio imprime su información específica según su tipo.
+
+---
+
+## Semana 8 - Interfaces, Polimorfismo y Estructuras Dinámicas
+
+### Descripción
+Ampliación del sistema para gestionar nuevas entidades (guías, vehículos y
+colaboradores externos) mediante una interfaz común, una colección genérica
+y una interfaz gráfica de usuario.
+
+### Interfaz y clases nuevas
+- `Registrable` (interfaz) — contrato común con el método `mostrarResumen()`.
+- `GuiaTuristico` — implementa Registrable (nombre, idioma, años de experiencia).
+- `Vehiculo` — implementa Registrable (tipo, patente, capacidad).
+- `ColaboradorExterno` — implementa Registrable (nombre, servicio, teléfono).
+- `GestorEntidades` — colección `ArrayList<Registrable>` que recorre los objetos
+  y usa `instanceof` para diferenciar cada tipo y generar un reporte con totales.
+- `VentanaPrincipal` — interfaz gráfica (JFrame) para ingresar entidades y ver el reporte.
+
+### Ejecución
+1. Abrir el proyecto en IntelliJ IDEA.
+2. Ejecutar la clase `ui/VentanaPrincipal.java`.
+3. Usar los botones para agregar guías, vehículos y colaboradores.
+4. Presionar "Ver Reporte" para visualizar el listado con la diferenciación por tipo.
