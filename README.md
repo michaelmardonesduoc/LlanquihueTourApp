@@ -1,71 +1,64 @@
 # LlanquihueTourApp
 
-Aplicación de gestión turística desarrollada en Java para el curso Desarrollo Orientado a Objetos - DUOC UC.
+Sistema de gestión para la agencia de turismo **Llanquihue Tour**, desarrollado en Java como parte de la asignatura de Programación Orientada a Objetos (DUOC UC).
 
----
+## Descripción del sistema actualizado
 
-## Semana 6 - Herencia
+En esta etapa el sistema se amplió para gestionar nuevas entidades de la agencia (guías turísticos, vehículos y colaboradores externos) bajo un contrato de comportamiento común.
 
-### Objetivo
-Implementar una jerarquía de clases usando herencia en Java, con una superclase abstracta y tres subclases que representan distintos tipos de servicios turísticos.
+Las entidades se almacenan en una única colección genérica `ArrayList<Registrable>`, se recorren de forma polimórfica y se diferencian en tiempo de ejecución mediante el operador `instanceof`, aplicando lógica específica según el tipo real de cada objeto.
 
-### Clases creadas
+Además, se incorporó una interfaz gráfica básica construida con Swing (`JFrame` + `JOptionPane`) que permite el ingreso y la visualización de registros por parte del personal administrativo, sin necesidad de interactuar con la consola.
 
-- `ServicioTuristico` — Superclase con atributos `nombre` y `duracionHoras`
-- `RutaGastronomica` — Subclase con atributo `numeroDeParadas`
-- `PaseoLacustre` — Subclase con atributo `tipoEmbarcacion`
-- `ExcursionCultural` — Subclase con atributo `lugarHistorico`
-- `GestorServicios` — Crea y almacena objetos de cada subclase
-- `Main` — Muestra todos los servicios por consola
+## Clases e interfaces utilizadas
 
-### Instrucciones para ejecutar Main
+### Paquete `model`
+| Elemento | Tipo | Descripción |
+|---|---|---|
+| `Registrable` | Interfaz | Contrato común. Declara `mostrarResumen()` sin implementarlo. |
+| `RecursoAgencia` | Clase abstracta | Superclase base. Centraliza `id` y `nombre`, implementa `Registrable` y deja `mostrarResumen()` abstracto. |
+| `GuiaTuristico` | Subclase | Hereda de `RecursoAgencia`. Atributos propios: `idioma`, `aniosExperiencia`. |
+| `Vehiculo` | Subclase | Hereda de `RecursoAgencia`. Atributos propios: `tipo`, `patente`, `capacidad`. |
+| `ColaboradorExterno` | Subclase | Hereda de `RecursoAgencia`. Atributos propios: `empresa`, `servicio`, `tarifaPorJornada`. |
 
-1. Abrir el proyecto en IntelliJ IDEA
-2. Ejecutar la clase `ui/Main.java`
-3. La consola mostrará los tours y los servicios turísticos registrados
+### Paquete `data`
+| Elemento | Descripción |
+|---|---|
+| `GestorEntidades` | Administra la colección `ArrayList<Registrable>`. Recorre los objetos con `for-each`, invoca `mostrarResumen()` de forma polimórfica y aplica `instanceof` para generar información diferenciada por tipo. |
 
----
+### Paquete `ui`
+| Elemento | Descripción |
+|---|---|
+| `VentanaPrincipal` | Interfaz gráfica (`JFrame`) con botones de acción y área de reporte. Captura datos mediante `JOptionPane`. |
+| `Main` | Clase principal. Punto de entrada del sistema. |
 
-## Semana 7 - Polimorfismo
+## Conceptos aplicados
 
-### Objetivo
-Aplicar polimorfismo sobre la jerarquía de `ServicioTuristico`, recorriendo
-una colección genérica e invocando un método sobrescrito en cada subclase.
+- **Interfaces:** `Registrable` es implementada por la jerarquía completa (3 clases concretas).
+- **Herencia:** una superclase (`RecursoAgencia`) con tres subclases diferenciadas.
+- **Polimorfismo:** cada subclase sobrescribe `mostrarResumen()`; la llamada se resuelve en tiempo de ejecución.
+- **Colecciones genéricas:** `ArrayList<Registrable>` almacena objetos de distintas clases.
+- **Validación de tipos:** `instanceof` con downcast para aplicar lógica exclusiva de cada subclase.
 
-### Cambios realizados
-- Se agregó el método `mostrarInformacion()` en la superclase `ServicioTuristico`.
-- Cada subclase (`RutaGastronomica`, `PaseoLacustre`, `ExcursionCultural`) lo
-  sobrescribe con `@Override`, mostrando su atributo específico.
-- `GestorServicios.mostrarTodos()` recorre la colección `ArrayList<ServicioTuristico>`
-  con un `for-each` e invoca `mostrarInformacion()` de forma polimórfica (sin `instanceof`).
-- `Main` ejecuta `mostrarTodos()` para demostrar el comportamiento polimórfico.
+## Instrucciones de ejecución
 
-### Ejecución
-1. Abrir el proyecto en IntelliJ IDEA.
-2. Ejecutar la clase `ui/Main.java`.
-3. La consola mostrará los tours y luego los servicios turísticos, donde cada
-   servicio imprime su información específica según su tipo.
+1. Clonar o descargar el repositorio.
+2. Abrir el proyecto en **IntelliJ IDEA**.
+3. Verificar que el JDK esté configurado (proyecto desarrollado con JDK 23).
+4. Ejecutar la clase principal: Clic derecho sobre el archivo → **Run 'Main.main()'**.
 
----
+5. Se abrirá la ventana **Llanquihue Tour - Gestión de Entidades**.
 
-## Semana 8 - Interfaces, Polimorfismo y Estructuras Dinámicas
+### Uso de la aplicación
 
-### Descripción
-Ampliación del sistema para gestionar nuevas entidades (guías, vehículos y
-colaboradores externos) mediante una interfaz común, una colección genérica
-y una interfaz gráfica de usuario.
+| Botón | Acción |
+|---|---|
+| **Agregar Guía** | Solicita ID, nombre, idioma y años de experiencia. |
+| **Agregar Vehículo** | Solicita ID, modelo, tipo, patente y capacidad. |
+| **Agregar Colaborador** | Solicita ID, nombre, empresa, servicio y tarifa por jornada. |
+| **Ver Reporte** | Muestra el reporte polimórfico con la lógica diferenciada por tipo. |
 
-### Interfaz y clases nuevas
-- `Registrable` (interfaz) — contrato común con el método `mostrarResumen()`.
-- `GuiaTuristico` — implementa Registrable (nombre, idioma, años de experiencia).
-- `Vehiculo` — implementa Registrable (tipo, patente, capacidad).
-- `ColaboradorExterno` — implementa Registrable (nombre, servicio, teléfono).
-- `GestorEntidades` — colección `ArrayList<Registrable>` que recorre los objetos
-  y usa `instanceof` para diferenciar cada tipo y generar un reporte con totales.
-- `VentanaPrincipal` — interfaz gráfica (JFrame) para ingresar entidades y ver el reporte.
+## Autor
 
-### Ejecución
-1. Abrir el proyecto en IntelliJ IDEA.
-2. Ejecutar la clase `ui/VentanaPrincipal.java`.
-3. Usar los botones para agregar guías, vehículos y colaboradores.
-4. Presionar "Ver Reporte" para visualizar el listado con la diferenciación por tipo.
+**Michael Mardones**  
+Analista Programador Computacional — DUOC UC

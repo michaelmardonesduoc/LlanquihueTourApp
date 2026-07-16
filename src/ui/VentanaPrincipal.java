@@ -5,29 +5,51 @@ import model.ColaboradorExterno;
 import model.GuiaTuristico;
 import model.Vehiculo;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
 
+/**
+ * Interfaz grafica basica del sistema Llanquihue Tour.
+ *
+ * Permite ingresar distintos tipos de entidades mediante JOptionPane y
+ * visualizar el reporte generado por GestorEntidades, donde se aplica
+ * polimorfismo e instanceof.
+ */
 public class VentanaPrincipal extends JFrame {
 
-    // El gestor mantiene la colección de entidades mientras la ventana está abierta
-    private final GestorEntidades gestor = new GestorEntidades();
+    // Gestor que mantiene la coleccion polimorfica de entidades
+    private GestorEntidades gestor;
 
-    // Área de texto donde se muestran los resultados
-    private final JTextArea areaTexto = new JTextArea();
+    // Area donde se muestra el reporte
+    private JTextArea areaReporte;
 
     public VentanaPrincipal() {
-        // --- Configuración de la ventana ---
-        setTitle("Llanquihue Tour - Gestión de Entidades");
-        setSize(600, 450);
+        gestor = new GestorEntidades();
+        inicializarComponentes();
+    }
+
+    /**
+     * Arma la ventana: botones de accion arriba y area de texto al centro.
+     */
+    private void inicializarComponentes() {
+        setTitle("Llanquihue Tour - Gestion de Entidades");
+        setSize(700, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // centra la ventana en pantalla
+        setLocationRelativeTo(null);   // centra la ventana en pantalla
         setLayout(new BorderLayout());
 
-        // --- Panel de botones (arriba) ---
-        JPanel panelBotones = new JPanel();
-        JButton btnGuia = new JButton("Agregar Guía");
-        JButton btnVehiculo = new JButton("Agregar Vehículo");
+        // ----- Panel superior con los botones -----
+        JPanel panelBotones = new JPanel(new FlowLayout());
+
+        JButton btnGuia = new JButton("Agregar Guia");
+        JButton btnVehiculo = new JButton("Agregar Vehiculo");
         JButton btnColaborador = new JButton("Agregar Colaborador");
         JButton btnReporte = new JButton("Ver Reporte");
 
@@ -35,89 +57,121 @@ public class VentanaPrincipal extends JFrame {
         panelBotones.add(btnVehiculo);
         panelBotones.add(btnColaborador);
         panelBotones.add(btnReporte);
+
         add(panelBotones, BorderLayout.NORTH);
 
-        // --- Área de texto con scroll (centro) ---
-        areaTexto.setEditable(false);
-        areaTexto.setFont(new Font("Monospaced", Font.PLAIN, 13));
-        add(new JScrollPane(areaTexto), BorderLayout.CENTER);
+        // ----- Area central del reporte -----
+        areaReporte = new JTextArea();
+        areaReporte.setEditable(false);
+        areaReporte.setFont(new Font("Monospaced", Font.PLAIN, 13));
+        add(new JScrollPane(areaReporte), BorderLayout.CENTER);
 
-        // --- Acciones de los botones ---
+        // ----- Acciones de los botones -----
         btnGuia.addActionListener(e -> agregarGuia());
         btnVehiculo.addActionListener(e -> agregarVehiculo());
         btnColaborador.addActionListener(e -> agregarColaborador());
-        btnReporte.addActionListener(e -> verReporte());
+        btnReporte.addActionListener(e -> mostrarReporte());
     }
 
-    // Pide datos y crea un GuiaTuristico
+    /**
+     * Pide los datos de un guia turistico y lo agrega a la coleccion.
+     */
     private void agregarGuia() {
-        String nombre = JOptionPane.showInputDialog(this, "Nombre del guía:");
-        if (nombre == null || nombre.isBlank()) return;
-
-        String idioma = JOptionPane.showInputDialog(this, "Idioma:");
-        if (idioma == null || idioma.isBlank()) return;
-
-        String textoAnios = JOptionPane.showInputDialog(this, "Años de experiencia:");
-        if (textoAnios == null) return;
-
         try {
+            String id = JOptionPane.showInputDialog(this, "ID del guia (ej: G001):");
+            if (id == null) return;   // el usuario cancelo
+
+            String nombre = JOptionPane.showInputDialog(this, "Nombre completo del guia:");
+            if (nombre == null) return;
+
+            String idioma = JOptionPane.showInputDialog(this, "Idioma principal:");
+            if (idioma == null) return;
+
+            String textoAnios = JOptionPane.showInputDialog(this, "Anios de experiencia:");
+            if (textoAnios == null) return;
+
             int anios = Integer.parseInt(textoAnios.trim());
-            gestor.agregar(new GuiaTuristico(nombre, idioma, anios));
-            areaTexto.append("Guía agregado: " + nombre + "\n");
+
+            // El objeto se agrega como Registrable a la coleccion generica
+            gestor.agregarEntidad(new GuiaTuristico(id, nombre, idioma, anios));
+            JOptionPane.showMessageDialog(this, "Guia turistico agregado correctamente.");
+
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Los años deben ser un número.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Los anios de experiencia deben ser un numero entero.",
+                    "Error de formato", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // Pide datos y crea un Vehiculo
+    /**
+     * Pide los datos de un vehiculo y lo agrega a la coleccion.
+     */
     private void agregarVehiculo() {
-        String tipo = JOptionPane.showInputDialog(this, "Tipo (Van, Bus, Lancha...):");
-        if (tipo == null || tipo.isBlank()) return;
-
-        String patente = JOptionPane.showInputDialog(this, "Patente:");
-        if (patente == null || patente.isBlank()) return;
-
-        String textoCap = JOptionPane.showInputDialog(this, "Capacidad (pasajeros):");
-        if (textoCap == null) return;
-
         try {
-            int capacidad = Integer.parseInt(textoCap.trim());
-            gestor.agregar(new Vehiculo(tipo, patente, capacidad));
-            areaTexto.append("Vehículo agregado: " + tipo + " (" + patente + ")\n");
+            String id = JOptionPane.showInputDialog(this, "ID del vehiculo (ej: V001):");
+            if (id == null) return;
+
+            String nombre = JOptionPane.showInputDialog(this, "Modelo del vehiculo (ej: Mercedes Sprinter):");
+            if (nombre == null) return;
+
+            String tipo = JOptionPane.showInputDialog(this, "Tipo (Van, Bus, Lancha):");
+            if (tipo == null) return;
+
+            String patente = JOptionPane.showInputDialog(this, "Patente:");
+            if (patente == null) return;
+
+            String textoCapacidad = JOptionPane.showInputDialog(this, "Capacidad de pasajeros:");
+            if (textoCapacidad == null) return;
+
+            int capacidad = Integer.parseInt(textoCapacidad.trim());
+
+            gestor.agregarEntidad(new Vehiculo(id, nombre, tipo, patente, capacidad));
+            JOptionPane.showMessageDialog(this, "Vehiculo agregado correctamente.");
+
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "La capacidad debe ser un número.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "La capacidad debe ser un numero entero.",
+                    "Error de formato", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // Pide datos y crea un ColaboradorExterno
+    /**
+     * Pide los datos de un colaborador externo y lo agrega a la coleccion.
+     */
     private void agregarColaborador() {
-        String nombre = JOptionPane.showInputDialog(this, "Nombre del colaborador:");
-        if (nombre == null || nombre.isBlank()) return;
+        try {
+            String id = JOptionPane.showInputDialog(this, "ID del colaborador (ej: C001):");
+            if (id == null) return;
 
-        String servicio = JOptionPane.showInputDialog(this, "Servicio (Fotografía, Catering...):");
-        if (servicio == null || servicio.isBlank()) return;
+            String nombre = JOptionPane.showInputDialog(this, "Nombre del colaborador:");
+            if (nombre == null) return;
 
-        String telefono = JOptionPane.showInputDialog(this, "Teléfono:");
-        if (telefono == null || telefono.isBlank()) return;
+            String empresa = JOptionPane.showInputDialog(this, "Empresa a la que pertenece:");
+            if (empresa == null) return;
 
-        gestor.agregar(new ColaboradorExterno(nombre, servicio, telefono));
-        areaTexto.append("Colaborador agregado: " + nombre + "\n");
+            String servicio = JOptionPane.showInputDialog(this, "Servicio (Fotografia, Catering, Transporte):");
+            if (servicio == null) return;
+
+            String textoTarifa = JOptionPane.showInputDialog(this, "Tarifa por jornada (ej: 45000):");
+            if (textoTarifa == null) return;
+
+            // Se reemplaza la coma por punto para evitar problemas de configuracion regional
+            double tarifa = Double.parseDouble(textoTarifa.trim().replace(",", "."));
+
+            gestor.agregarEntidad(new ColaboradorExterno(id, nombre, empresa, servicio, tarifa));
+            JOptionPane.showMessageDialog(this, "Colaborador externo agregado correctamente.");
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "La tarifa debe ser un numero valido.",
+                    "Error de formato", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-    // Muestra el reporte completo (aquí se ejecuta el instanceof del gestor)
-    private void verReporte() {
-        if (gestor.getEntidades().isEmpty()) {
-            areaTexto.setText("No hay entidades registradas todavía.\n" +
-                    "Usa los botones de arriba para agregar algunas.");
-            return;
-        }
-        areaTexto.setText("=== REPORTE DE ENTIDADES ===\n\n");
-        areaTexto.append(gestor.generarReporte());
-    }// NUEVO (Semana 8): punto de entrada que abre la ventana
-    public static void main(String[] args) {
-        // Buenas prácticas de Swing: crear la ventana en el hilo de eventos
-        SwingUtilities.invokeLater(() -> new VentanaPrincipal().setVisible(true));
+    /**
+     * Muestra en pantalla el reporte polimorfico generado por el gestor.
+     */
+    private void mostrarReporte() {
+        areaReporte.setText(gestor.generarReporte());
     }
 }
